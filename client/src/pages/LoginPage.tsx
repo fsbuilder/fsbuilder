@@ -56,7 +56,7 @@ export default function LoginPage() {
           <div className="mx-auto w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center mb-4">
             <span className="text-white font-bold text-2xl">F</span>
           </div>
-          <CardTitle>Welcome to FS-Maker</CardTitle>
+          <CardTitle>Welcome to FS Builder</CardTitle>
           <CardDescription>Sign in to your account to continue</CardDescription>
         </CardHeader>
         <CardContent>

@@ -62,7 +62,7 @@ export default function RegisterPage() {
             <span className="text-white font-bold text-2xl">F</span>
           </div>
           <CardTitle>Create an Account</CardTitle>
-          <CardDescription>Get started with FS-Maker</CardDescription>
+          <CardDescription>Get started with FS Builder</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

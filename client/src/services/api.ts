@@ -15,7 +15,7 @@ const api = axios.create({
 
 // Add auth token to requests
 api.interceptors.request.use((config) => {
-  const authData = localStorage.getItem('fs-maker-auth');
+  const authData = localStorage.getItem('fs-builder-auth');
   if (authData) {
     const { state } = JSON.parse(authData);
     if (state?.token) {
@@ -30,7 +30,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('fs-maker-auth');
+      localStorage.removeItem('fs-builder-auth');
       window.location.href = '/login';
     }
     return Promise.reject(error);

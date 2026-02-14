@@ -16,7 +16,7 @@ interface ReportData {
 
 export async function generateExcelReport(data: ReportData): Promise<ExcelJS.Workbook> {
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = 'FS-Maker';
+  workbook.creator = 'FS Builder';
   workbook.created = new Date();
 
   // Summary Sheet
