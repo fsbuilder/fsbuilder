@@ -1,6 +1,6 @@
 {
   "name": "fs-maker",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Project Appraisal and Feasibility Analysis Tool - COMFAR-like system",
   "private": true,
   "workspaces": [
