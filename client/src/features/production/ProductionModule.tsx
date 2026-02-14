@@ -179,7 +179,7 @@ export default function ProductionModule({ projectId }: ProductionModuleProps) {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem('fs-maker-auth') || '{}').state?.token}`,
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('fs-builder-auth') || '{}').state?.token}`,
         },
         body: JSON.stringify({ schedule: scheduleData }),
       });

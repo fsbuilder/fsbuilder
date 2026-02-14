@@ -1,7 +1,7 @@
 {
-  "name": "fs-maker-server",
+  "name": "fs-builder-server",
   "version": "0.1.1",
-  "description": "FS-Maker Backend API",
+  "description": "FS Builder Backend API",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",

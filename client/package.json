@@ -1,5 +1,5 @@
 {
-  "name": "fs-maker-client",
+  "name": "fs-builder-client",
   "version": "0.1.1",
   "type": "module",
   "scripts": {

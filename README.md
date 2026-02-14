@@ -1,4 +1,4 @@
-# FS-Maker - Project Feasibility Analysis Tool
+# FS Builder - Project Feasibility Analysis Tool
 
 A comprehensive web-based project appraisal and feasibility analysis tool similar to UNIDO's COMFAR. Built with React, TypeScript, Node.js, and PostgreSQL.
 
@@ -51,7 +51,7 @@ A comprehensive web-based project appraisal and feasibility analysis tool simila
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd fs-maker
+   cd fs-builder
    ```
 
 2. **Install dependencies**
@@ -83,7 +83,7 @@ A comprehensive web-based project appraisal and feasibility analysis tool simila
 ## Project Structure
 
 ```
-fs-maker/
+fs-builder/
 ├── client/                    # React frontend
 │   ├── src/
 │   │   ├── components/        # Reusable UI components

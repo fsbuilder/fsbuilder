@@ -35,7 +35,7 @@ export const useAuthStore = create<AuthState>()(
         })),
     }),
     {
-      name: 'fs-maker-auth',
+      name: 'fs-builder-auth',
       partialize: (state) => ({
         user: state.user,
         token: state.token,
