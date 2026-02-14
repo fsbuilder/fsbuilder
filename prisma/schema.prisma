@@ -1,0 +1,223 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  projects  Project[]
+}
+
+model Project {
+  id                String          @id @default(uuid())
+  name              String
+  description       String?
+  sector            String
+  location          String
+  currency          String          @default("USD")
+  startDate         DateTime
+  constructionYears Int             @default(1)
+  operationYears    Int             @default(10)
+  discountRate      Float           @default(10)
+  inflationRate     Float           @default(3)
+  taxRate           Float           @default(25)
+  status            ProjectStatus   @default(draft)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  userId            String
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  investments       Investment[]
+  products          Product[]
+  operatingCosts    OperatingCost[]
+  financing         Financing[]
+  scenarios         Scenario[]
+
+  @@index([userId])
+}
+
+enum ProjectStatus {
+  draft
+  active
+  completed
+  archived
+}
+
+model Investment {
+  id                 String              @id @default(uuid())
+  projectId          String
+  category           InvestmentCategory
+  description        String
+  amount             Float
+  year               Int
+  usefulLife         Int                 @default(10)
+  salvageValue       Float               @default(0)
+  depreciationMethod DepreciationMethod  @default(straight_line)
+  depreciationRate   Float               @default(10)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  project            Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+}
+
+enum InvestmentCategory {
+  land
+  buildings
+  machinery
+  equipment
+  vehicles
+  furniture
+  preproduction
+  working_capital
+  other
+}
+
+enum DepreciationMethod {
+  straight_line
+  declining_balance
+  none
+}
+
+model Product {
+  id                 String               @id @default(uuid())
+  projectId          String
+  name               String
+  unit               String
+  unitPrice          Float
+  priceEscalation    Float                @default(0)
+  installedCapacity  Float
+  capacityUnit       String
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  project            Project              @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  productionSchedule ProductionSchedule[]
+
+  @@index([projectId])
+}
+
+model ProductionSchedule {
+  id                  String   @id @default(uuid())
+  productId           String
+  year                Int
+  capacityUtilization Float
+  quantity            Float
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  product             Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, year])
+  @@index([productId])
+}
+
+model OperatingCost {
+  id             String       @id @default(uuid())
+  projectId      String
+  category       CostCategory
+  description    String
+  costType       CostType     @default(fixed)
+  amount         Float
+  unitCost       Float        @default(0)
+  escalationRate Float        @default(0)
+  startYear      Int          @default(1)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  project        Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+}
+
+enum CostCategory {
+  raw_materials
+  utilities
+  labor_direct
+  labor_indirect
+  maintenance
+  administrative
+  marketing
+  insurance
+  other
+}
+
+enum CostType {
+  fixed
+  variable
+}
+
+model Financing {
+  id                 String        @id @default(uuid())
+  projectId          String
+  type               FinancingType
+  name               String
+  amount             Float
+  interestRate       Float         @default(0)
+  termYears          Int           @default(0)
+  gracePeriod        Int           @default(0)
+  disbursementYear   Int           @default(0)
+  repaymentStartYear Int           @default(1)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  project            Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+}
+
+enum FinancingType {
+  equity
+  loan
+  grant
+}
+
+model Scenario {
+  id          String               @id @default(uuid())
+  projectId   String
+  name        String
+  description String?
+  type        ScenarioType         @default(custom)
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  project     Project              @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assumptions ScenarioAssumption[]
+  results     ScenarioResult?
+
+  @@index([projectId])
+}
+
+enum ScenarioType {
+  best
+  base
+  worst
+  custom
+}
+
+model ScenarioAssumption {
+  id         String   @id @default(uuid())
+  scenarioId String
+  variable   String
+  adjustment Float
+  scenario   Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+
+  @@index([scenarioId])
+}
+
+model ScenarioResult {
+  id                       String   @id @default(uuid())
+  scenarioId               String   @unique
+  npv                      Float
+  irr                      Float
+  mirr                     Float
+  paybackPeriod            Float
+  discountedPaybackPeriod  Float
+  roi                      Float
+  benefitCostRatio         Float
+  createdAt                DateTime @default(now())
+  scenario                 Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+}
